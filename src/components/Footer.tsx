@@ -4,8 +4,8 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
   
   const socialLinks = [
-    { icon: Github, href: "https://github.com/chiebukaonyejesi", label: "GitHub" },
-    { icon: Linkedin, href: "https://www.linkedin.com/in/chiebukaonyejesi", label: "LinkedIn" },
+    { icon: Github, href: "https://github.com/ebuka2385", label: "GitHub" },
+    { icon: Linkedin, href: "https://www.linkedin.com/in/chiebuka-onyejesi/", label: "LinkedIn" },
     { icon: Mail, href: "mailto:chiebukaonyejesi@gmail.com", label: "Email" },
   ];
 
