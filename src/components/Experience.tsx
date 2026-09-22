@@ -1,168 +1,183 @@
-import { Calendar, MapPin, ExternalLink } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import React, { useState } from "react";
+import { MapPin, Calendar, ChevronDown } from "lucide-react";
+import { useState } from "react";
+import Reveal from "@/components/Reveal";
 
 const Experience = () => {
   const experiences = [
+    {
+      company: "Buckeye AI",
+      role: "Founding Engineer",
+      duration: "Jan 2026 - Present",
+      location: "San Francisco, CA",
+      description: "Context engineering self-healing platform that auto-fixes broken hospital portal workflows when UIs change, extending benefits verification system serving 7 hospitals and $9M+ in recovered charity care debt.",
+      highlights: [
+        "Engineered dual-mode system: heavyweight (45k tokens) for novel problems, lightweight (45x cost reduction) for pattern retrieval",
+        "90% coverage with pattern library growth trajectory",
+        "Extended platform to 7 hospitals with $9M+ impact",
+      ],
+      technologies: ["TypeScript", "Claude API", "QwenVL", "PostgreSQL", "E2B", "Stagehand", "Browserbase"],
+      image: "/buckeye.jpg",
+    },
+    {
+      company: "Honeywell Technologies",
+      role: "Software Engineering Intern",
+      duration: "Jun 2026 - Aug 2026",
+      location: "Richmond, VA",
+      description: "Architected agnostic notification framework and AI-assisted incident orchestration for Niagara Cloud platform.",
+      highlights: [
+        "Built configurable push/SMS delivery with multi-level escalation workflows (projected $k/month subscriptions)",
+        "AI incident orchestration correlating 100s of alarm streams with 90% volume reduction",
+        "Improved operator response efficiency significantly",
+      ],
+      technologies: ["React", "Python", "Java", "TypeScript", "Node.js", "PostgreSQL", "Redis", "RabbitMQ", "Azure", "Twilio"],
+      image: "/honeywell.jpg",
+    },
     {
       company: "John Deere",
       role: "Software Engineering Intern",
       duration: "May 2025 - Aug 2025",
       location: "Moline, Illinois",
-      description: "Worked on SHIELD, an internal security dashboard, focusing on backend data integration and automation for security analytics.",
+      description: "Built backend APIs and Databricks ETL pipeline automating ingestion of 90k+ cloud threat findings for security alert automation.",
       highlights: [
-        "Integrated CTR data for real-time GitHub risk visibility",
-        "Built APIs and ETL pipelines (AWS, Databricks)",
-        "Cut triage time, saved $100k+"
+        "Reduced security alert triage time by 42% (projected $60k annual savings)",
+        "Enabled 3x faster threat response with real-time GitHub risk data integration",
+        "Surfaced critical vulnerabilities during active development",
       ],
-      technologies: ["React", "Python", "AWS", "Databricks", "ServiceNow"]
+      technologies: ["Python", "Databricks", "ServiceNow API", "PostgreSQL", "Kubernetes", "Azure DevOps", "Git"],
+      image: "/deere.jpg",
     },
     {
       company: "Parker Hannifin Corporation",
       role: "Software Engineering Intern",
       duration: "May 2024 - Aug 2024",
       location: "Cleveland, OH",
-      description: "Developed internal AI tools for video transcript search and knowledge retrieval, collaborating across frontend and backend teams.",
+      description: "Increased active usage of internal AI assistant by 30% through improved search responsiveness via RAG-based retrieval system.",
       highlights: [
-        "React frontend for AI assistant (+30% engagement)",
-        "Automated video ingestion/transcripts (Python, Azure)",
-        "Integrated OpenAI & Azure AI Search"
+        "Improved search relevance with RAG-based retrieval (30% usage increase)",
+        "Reduced time-to-answer for technical queries by 60%",
+        "Automated Python backend pipelines with parallel processing (8.2s → 1.1s latency)",
       ],
-      technologies: ["React", "Python", "Azure Video Indexer", "OpenAI", "Azure AI Search"]
+      technologies: ["Python", "JavaScript", "Azure AI Search", "React", "FastAPI", "Vector Embeddings"],
+      image: "/parker.jpg",
     },
-        {
-      company: "Concepta Innovation Services",
-      role: "Data Analyst",
-      duration: "2022 - 2023",
-      location: "Remote",
-      description: "Worked as a data analyst supporting business decisions through reporting and visualization.",
-      highlights: [
-        "Processed 10K+ record datasets",
-        "Automated reporting (Python, Excel)",
-        "Found trends that improved efficiency by 25%"
-      ],
-      technologies: ["Python", "SQL", "Excel", "Pandas"]
-    }
   ];
 
-  // Add state for expand/collapse
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-  // Placeholder images for each company (replace with real images if available)
-  const images = [
-    "/public/deere.jpeg",
-    "/public/parker1.jpeg",
-    "/public/concepta.png"
-  ];
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
   return (
-    <section id="experience" className="py-20 relative">
-      <div className="container mx-auto px-6">
-        <div className="max-w-6xl mx-auto">
-          {/* Section Header */}
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold font-space mb-4">
-              Professional <span className="gradient-text">Experience</span>
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              My professional growth and contributions
-            </p>
-          </div>
+    <section id="experience" className="py-24">
+      <div className="container max-w-6xl">
+        <Reveal className="mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">Experience</h2>
+          <p className="text-muted-foreground">My professional journey</p>
+        </Reveal>
 
-          {/* Experience Cards */}
-          <div className="space-y-8 md:grid md:grid-cols-1 md:gap-8">
-            {experiences.map((exp, index) => {
-              const expanded = openIndex === index;
-              return (
-                <div
-                  key={index}
-                  className={`group transition-all duration-300 flex ${expanded ? "shadow-2xl z-10" : ""}`}
-                  style={{
-                    animationDelay: `${index * 0.2}s`,
-                    height: expanded ? 'auto' : '26rem',
-                    minHeight: expanded ? undefined : '22rem',
-                    maxHeight: expanded ? undefined : '30rem',
-                  }}
-                >
-                  <div className="flex flex-col md:flex-row items-stretch glass p-0 rounded-xl hover-lift group-hover:glow-purple overflow-hidden w-full h-full">
-                    {/* Text (1/2) */}
-                    <div className={`flex-1 flex flex-col justify-center p-8 transition-all duration-300 ${!expanded ? "items-center text-center" : "items-start text-left"}`} style={{ minHeight: '100%' }}>
-                      <div className={`w-full flex flex-col ${!expanded ? "items-center" : "lg:flex-row lg:items-center lg:justify-between"} mb-6`}>
-                        <div className={`space-y-4 ${!expanded ? "w-full" : ""}`}> 
-                          <h3 className={`font-bold font-space transition-all duration-300 ${!expanded ? "text-3xl md:text-4xl text-primary" : "text-2xl text-primary"} mb-2`}> 
-                            {exp.role} 
-                          </h3> 
-                          <h4 className={`font-semibold transition-all duration-300 ${!expanded ? "text-2xl md:text-3xl text-foreground" : "text-xl text-foreground"} mb-3`}> 
-                            {exp.company} 
-                          </h4> 
-                        </div> 
-                        <div className={`flex flex-col sm:flex-row sm:items-center gap-4 text-base text-muted-foreground mt-4 lg:mt-4 ${!expanded ? "justify-center mt-0 w-full" : ""}`}> 
-                          <div className="flex items-center justify-center"> 
-                            <Calendar className="w-5 h-5 mr-2" /> 
-                            {exp.duration} 
-                          </div> 
-                          <div className="flex items-center justify-center"> 
-                            <MapPin className="w-5 h-5 mr-2" /> 
-                            {exp.location} 
-                          </div> 
-                        </div> 
+        <div className="space-y-8">
+          {experiences.map((exp, index) => {
+            const isExpanded = expandedIndex === index;
+
+            return (
+              <Reveal key={exp.company} delay={index * 90}>
+                <div className="group glass-card hover-lift overflow-hidden">
+                  <div className="flex flex-col md:flex-row">
+                    {/* Left: summary + toggle */}
+                    <div className="flex-1 flex flex-col items-center justify-center text-center p-8 md:p-12">
+                      <h3 className="text-2xl md:text-3xl font-bold text-gradient">
+                        {exp.role}
+                      </h3>
+                      <p className="mt-2 text-lg md:text-xl font-bold">
+                        {exp.company}
+                      </p>
+
+                      <div className="mt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
+                        <span className="flex items-center gap-2">
+                          <Calendar className="w-4 h-4" />
+                          {exp.duration}
+                        </span>
+                        <span className="flex items-center gap-2">
+                          <MapPin className="w-4 h-4" />
+                          {exp.location}
+                        </span>
                       </div>
-                      <div className="mt-6"> 
-                        <Button 
-                          variant="outline" 
-                          size="lg" 
-                          className={`w-fit mb-4 font-bold px-6 py-2 rounded-full transition-all duration-200 ${expanded ? "bg-primary text-white border-primary hover:bg-primary/80" : "bg-[#6B46C1] text-white border-[#6B46C1] hover:bg-[#6B46C1]/80"}`} 
-                          onClick={() => setOpenIndex(expanded ? null : index)} 
-                        > 
-                          {expanded ? "Show Less" : "Learn More"} 
-                        </Button>
-                      </div>
-                      {/* Expanded Info */}
-                      <div
-                        className={`transition-all duration-300 overflow-hidden ${expanded ? "max-h-[1000px] opacity-100 mt-2" : "max-h-0 opacity-0"}`}
-                        style={{ pointerEvents: expanded ? "auto" : "none" }}
+
+                      <button
+                        onClick={() => setExpandedIndex(isExpanded ? null : index)}
+                        aria-expanded={isExpanded}
+                        className="glass-accent mt-7 inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-medium text-accent-foreground transition-transform duration-500 ease-out-expo hover:scale-[1.04] active:scale-95"
                       >
-                        <p className="text-muted-foreground mb-6 leading-relaxed">
-                          {exp.description}
-                        </p>
-                        <div className="space-y-4 mb-6">
-                          <h5 className="font-semibold text-primary">Key Achievements:</h5>
-                          <ul className="space-y-2">
-                            {exp.highlights.map((highlight, hIndex) => (
-                              <li key={hIndex} className="flex items-start text-muted-foreground">
-                                <span className="w-2 h-2 bg-primary rounded-full mr-3 mt-2 flex-shrink-0"></span>
-                                {highlight}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        <div className="space-y-3">
-                          <h5 className="font-semibold text-primary">Technologies Used:</h5>
-                          <div className="flex flex-wrap gap-2">
-                            {exp.technologies.map((tech, tIndex) => (
-                              <span
-                                key={tIndex}
-                                className="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full border border-primary/20"
-                              >
-                                {tech}
-                              </span>
-                            ))}
+                        {isExpanded ? "Show Less" : "Learn More"}
+                        <ChevronDown
+                          className={`w-4 h-4 transition-transform duration-500 ease-out-expo ${
+                            isExpanded ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
+
+                      {/* Animating grid rows lets the panel ease open to its natural height */}
+                      <div
+                        className={`grid w-full text-left transition-all duration-700 ease-out-expo ${
+                          isExpanded
+                            ? "grid-rows-[1fr] opacity-100 mt-8"
+                            : "grid-rows-[0fr] opacity-0 mt-0"
+                        }`}
+                      >
+                        <div className="overflow-hidden">
+                          <div className="space-y-5 border-t border-white/10 pt-6">
+                            <p className="text-muted-foreground">
+                              {exp.description}
+                            </p>
+
+                            <div>
+                              <h4 className="font-semibold mb-3">
+                                Key achievements
+                              </h4>
+                              <ul className="space-y-2">
+                                {exp.highlights.map((highlight) => (
+                                  <li
+                                    key={highlight}
+                                    className="text-sm text-muted-foreground flex gap-2"
+                                  >
+                                    <span className="text-accent">•</span>
+                                    <span>{highlight}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
+                            <div>
+                              <h4 className="font-semibold mb-3">Technologies</h4>
+                              <div className="flex flex-wrap gap-2">
+                                {exp.technologies.map((tech) => (
+                                  <span
+                                    key={tech}
+                                    className="text-xs px-2.5 py-1 rounded-full border border-white/10 bg-white/5 transition-colors duration-300 hover:border-accent/40"
+                                  >
+                                    {tech}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                    {/* Image (2/5) */}
-                    <div className="md:w-2/5 w-full h-56 md:h-auto flex items-center justify-center bg-gray-800">
+
+                    {/* Right: photo */}
+                    <div className="relative h-64 sm:h-80 md:h-auto md:w-[42%] shrink-0 overflow-hidden border-t border-white/10 md:border-t-0 md:border-l">
                       <img
-                        src={images[index % images.length]}
-                        alt={exp.company + " logo"}
-                        className="object-cover w-full h-full md:rounded-l-none md:rounded-r-xl rounded-b-xl md:rounded-b-none"
+                        src={exp.image}
+                        alt={exp.company}
+                        loading="lazy"
+                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-[900ms] ease-out-expo group-hover:scale-[1.05]"
                       />
+                      {/* Softens the seam between photo and card */}
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent md:bg-gradient-to-r md:from-black/40 md:via-transparent md:to-transparent" />
                     </div>
                   </div>
                 </div>
-              );
-            })}
-          </div>
+              </Reveal>
+            );
+          })}
         </div>
       </div>
     </section>

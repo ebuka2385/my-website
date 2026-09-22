@@ -1,73 +1,112 @@
-# Welcome to your Lovable project
+# Chiebuka Onyejesi
 
-## Project info
+Personal portfolio site — a single-page React app with sections for experience, education, projects, skills, and contact.
 
-**URL**: https://lovable.dev/projects/f299021c-4fc0-4afa-ab58-9f44f5498b86
+## Stack
 
-## How can I edit this code?
+- Vite
+- React
+- TypeScript
+- Tailwind CSS
+- shadcn/ui
 
-There are several ways of editing your application.
+## Run locally
 
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/f299021c-4fc0-4afa-ab58-9f44f5498b86) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+The project lives in `~/dev/my-website` (see the iCloud note at the bottom). Open a terminal and run:
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+cd ~/dev/my-website
+npm install          # first time only, or after pulling new dependencies
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Then open **http://localhost:8080/**.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Leave that terminal running — it's the dev server, and it rebuilds on every save. Press `Ctrl+C` in it to stop.
 
-**Use GitHub Codespaces**
+### Day to day
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Once dependencies are installed, starting up is just:
 
-## What technologies are used for this project?
+```sh
+cd ~/dev/my-website && npm run dev
+```
 
-This project is built with:
+### If port 8080 is already in use
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+The dev server is pinned to 8080 and will refuse to start rather than silently move to another port. Find and stop whatever is holding it:
 
-## How can I deploy this project?
+```sh
+lsof -ti tcp:8080          # prints the process ID, if any
+kill $(lsof -ti tcp:8080)  # stop it
+```
 
-Simply open [Lovable](https://lovable.dev/projects/f299021c-4fc0-4afa-ab58-9f44f5498b86) and click on Share -> Publish.
+### Before you deploy
 
-## Can I connect a custom domain to my Lovable project?
+Check that the production build compiles and the types are valid:
 
-Yes, you can!
+```sh
+npm run build    # writes dist/
+npm run preview  # serve dist/ to confirm it works
+```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## Scripts
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Start the dev server on port 8080 |
+| `npm run build` | Production build into `dist/` |
+| `npm run preview` | Serve the production build |
+| `npm run lint` | Run ESLint |
+| `npx tsc --noEmit -p tsconfig.app.json` | Type-check without emitting files |
+
+## Adding images
+
+Files in `public/` are served as-is, so photos need to be web-sized before being referenced. Straight-off-the-camera files are far too large — `concepta.png` was 19MB on its own. The site references optimised copies (`buckeye.jpg`, `deere.jpg`, `parker.jpg`, `honeywell.jpg`) capped at 1600px on the long edge at JPEG quality 80.
+
+To add a new photo, resize it on the way in:
+
+```sh
+cd ~/dev/my-website
+sips -Z 1600 -s format jpeg -s formatOptions 80 \
+  ~/Desktop/new-photo.jpeg --out public/new-photo.jpg
+```
+
+Then reference it as `/new-photo.jpg` (no `/public` prefix — that path 404s in a production build).
+
+## Requirements
+
+Node 18 or newer, and on Apple Silicon it must be a **native arm64** build. Check with:
+
+```sh
+node -p "process.version + ' ' + process.arch"
+```
+
+This should print `arm64`. The default Node is already set to `v20.19.4`, which is the only arm64 build installed here — `v20.15.1`, `v22.5.1`, `v22.12.0`, and `v16.20.2` are all x64, so avoid switching to them for this project.
+
+If it reports `x64`, Node is running under Rosetta. Vite's native dependencies (Rollup, esbuild, SWC) are installed per-architecture, so a mismatch fails with errors like `Cannot find module @rollup/rollup-darwin-arm64` or `Host version "0.21.5" does not match binary version "0.28.2"`. Switch back and reinstall:
+
+```sh
+nvm use v20.19.4
+rm -rf node_modules
+npm install
+```
+
+## If the dev server starts but the page never loads
+
+Check free disk space first — this was the actual cause of a long hang on this machine:
+
+```sh
+df -h /System/Volumes/Data
+```
+
+A full disk makes Vite stall while writing its dependency cache. Free some space, then clear the cache and restart:
+
+```sh
+rm -rf node_modules/.vite
+npm run dev
+```
+
+## Keep this project out of iCloud-synced folders
+
+Do not keep the repo in `~/Desktop` or `~/Documents` while iCloud's "Desktop & Documents Folders" sync is on. When iCloud evicts file contents, reads block until the file is downloaded again, and a wedged sync daemon makes those reads hang indefinitely. The symptom is a dev server that prints `ready` and holds the port open but never returns a page, plus `npm install` that stalls for minutes. This project lives in `~/dev/my-website` for that reason.

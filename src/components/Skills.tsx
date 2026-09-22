@@ -1,123 +1,67 @@
+import Reveal from "@/components/Reveal";
+
 const Skills = () => {
-  const skillCategories = [
+  const skillGroups = [
     {
-      title: "Programming Languages",
-      icon: "💻",
-      skills: [
-        { name: "Python"},
-        { name: "JavaScript"},
-        { name: "TypeScript"},
-        { name: "Java"},
-        { name: "SQL"}
-      ]
+      title: "Languages",
+      skills: ["TypeScript", "JavaScript", "Python", "Java", "Swift", "SQL"],
     },
     {
-      title: "Frontend Technologies",
-      icon: "🎨",
-      skills: [
-        { name: "React"},
-        { name: "HTML/CSS"},
-        { name: "Tailwind CSS"},
-        { name: "Vue.js"}
-      ]
+      title: "Frontend",
+      skills: ["React", "React Native", "Next.js", "Tailwind CSS"],
     },
     {
-      title: "Backend & Database",
-      icon: "⚙️",
-      skills: [
-        { name: "Node.js"},
-        { name: "Express.js"},
-        { name: "MongoDB"},
-        { name: "PostgreSQL"},
-        { name: "Firebase"}
-      ]
+      title: "Backend",
+      skills: ["Node.js", "Express", "Fastify", "FastAPI", "REST APIs"],
     },
     {
-      title: "Tools & Technologies",
-      icon: "🛠️",
-      skills: [
-        { name: "Git"},
-        { name: "Docker"},
-        { name: "AWS"},
-        { name: "Azure"},
-        { name: "Neon"}
-      ]
-    }
+      title: "Data",
+      skills: ["PostgreSQL", "Prisma", "Redis", "MongoDB", "Databricks"],
+    },
+    {
+      title: "AI",
+      skills: ["Claude API", "OpenAI API", "RAG", "Vector Embeddings", "Function Calling"],
+    },
+    {
+      title: "Infrastructure",
+      skills: ["Docker", "Kubernetes", "AWS", "Azure", "Git", "Linux"],
+    },
   ];
 
-  const getSkillColor = (level: number) => {
-    if (level >= 80) return "bg-primary";
-    if (level >= 70) return "bg-primary-glow";
-    return "bg-primary/60";
-  };
-
   return (
-    <section id="skills" className="py-20 relative">
-      <div className="container mx-auto px-6">
-        <div className="max-w-6xl mx-auto">
-          {/* Section Header */}
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold font-space mb-4">
-              Technical <span className="gradient-text">Skills</span>
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Technologies and languages I work with to bring ideas to life
-            </p>
-          </div>
+    <section id="skills" className="py-24">
+      <div className="container max-w-6xl">
+        <Reveal className="mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">Skills</h2>
+          <p className="text-muted-foreground">
+            Technologies and tools I work with
+          </p>
+        </Reveal>
 
-          {/* Skills Grid - Bubbles Only, No Years or Progress Bars */}
-          <div className="grid lg:grid-cols-2 gap-8">
-            {skillCategories.map((category, categoryIndex) => (
+        <div className="glass-card overflow-hidden">
+          {skillGroups.map((group, index) => (
+            <Reveal key={group.title} delay={index * 70}>
               <div
-                key={categoryIndex}
-                className="glass p-8 rounded-xl hover-lift"
-                style={{ animationDelay: `${categoryIndex * 0.1}s` }}
+                className={`grid grid-cols-1 sm:grid-cols-[9rem_1fr] gap-3 sm:gap-10 px-6 py-6 md:px-8 transition-colors duration-500 hover:bg-white/[0.03] ${
+                  index > 0 ? "border-t border-white/10" : ""
+                }`}
               >
-                <div className="mb-6">
-                  <h3 className="text-2xl font-bold font-space text-white">
-                    {category.title}
-                  </h3>
-                </div>
-                <div className="flex flex-wrap gap-3">
-                  {category.skills.map((skill, skillIndex) => (
+                <h3 className="text-sm uppercase tracking-wide text-muted-foreground">
+                  {group.title}
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {group.skills.map((skill) => (
                     <span
-                      key={skillIndex}
-                      className={
-                        'px-6 py-3 rounded-full font-bold text-lg border hover-lift cursor-default shadow bg-primary text-white border-primary'
-                      }
-                      style={{ animationDelay: `${categoryIndex * 0.1 + skillIndex * 0.05}s` }}
+                      key={skill}
+                      className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-sm transition-all duration-500 ease-out-expo hover:-translate-y-0.5 hover:border-accent/40 hover:text-accent"
                     >
-                      {skill.name}
+                      {skill}
                     </span>
                   ))}
                 </div>
               </div>
-            ))}
-          </div>
-
-          {/* Additional Skills as a Box */}
-          <div className="mt-16">
-            <div className="glass p-8 rounded-xl hover-lift text-center">
-              <h3 className="text-2xl font-bold font-space mb-8 text-white">
-                Other Technologies & Concepts
-              </h3>
-              <div className="flex flex-wrap justify-center gap-3">
-                {[
-                  "Agile Development", "REST APIs", "GraphQL", "Testing (Jest)", 
-                  "CI/CD", "Microservices", "Cloud Computing", "Data Structures",
-                  "Algorithms", "System Design", "Version Control", "Debugging"
-                ].map((tech, index) => (
-                  <span
-                    key={index}
-                    className="px-4 py-2 glass rounded-full text-base font-semibold hover-lift cursor-default"
-                    style={{ animationDelay: `${index * 0.05}s` }}
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Download } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Menu, X } from "lucide-react";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +16,6 @@ const Navigation = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -31,85 +29,69 @@ const Navigation = () => {
   };
 
   return (
-    <nav className={`fixed left-0 right-0 z-50 transition-all duration-300 mt-3 ${
-      isScrolled ? 'glass backdrop-blur-lg border-b border-white/10' : ''
-    }`} style={{ marginTop: '1rem' }}>
-      <div className="container mx-auto px-6">
-        <div className="flex items-center justify-between h-16">
+    <nav className="fixed top-0 left-0 right-0 z-50 px-4 pt-4">
+      {/* Floating glass pill that tightens as you scroll */}
+      <div
+        className={`container max-w-6xl rounded-full transition-all duration-700 ease-out-expo ${
+          isScrolled ? "glass px-6 py-1" : "px-6 py-1 border border-transparent"
+        }`}
+      >
+        <div className="flex items-center justify-between h-14">
           {/* Logo */}
-          <a 
-            href="#" 
-            className="font-space font-bold text-lg md:text-xl gradient-text hover:scale-105 transition-transform"
+          <a
+            href="#"
+            className="font-bold text-lg transition-colors duration-300 hover:text-accent"
             onClick={(e) => {
               e.preventDefault();
-              window.scrollTo({ top: 0, behavior: 'smooth' });
+              window.scrollTo({ top: 0, behavior: "smooth" });
             }}
           >
             Chiebuka
           </a>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8 text-base md:text-lg">
+          {/* Desktop Nav */}
+          <div className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
-              <a
+              <button
                 key={item.href}
-                href={item.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection(item.href);
-                }}
-                className="text-muted-foreground hover:text-primary transition-colors cursor-pointer font-semibold text-lg md:text-xl px-2"
+                onClick={() => scrollToSection(item.href)}
+                className="group relative text-sm text-muted-foreground transition-colors duration-300 hover:text-foreground"
               >
                 {item.label}
-              </a>
+                {/* Underline grows from the left on hover */}
+                <span className="absolute -bottom-1 left-0 h-px w-0 bg-gradient-to-r from-accent to-accent-soft transition-all duration-500 ease-out-expo group-hover:w-full" />
+              </button>
             ))}
-          </div>
-
-          {/* Desktop CTA */}
-          <div className="hidden md:block">
-            <Button variant="glow" size="default" className="group px-4 py-2 text-base md:text-lg">
-              <Download className="w-5 h-5 mr-2 group-hover:animate-bounce" />
-              Resume
-            </Button>
           </div>
 
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 rounded-lg glass hover-lift"
-            style={{ fontSize: '1.5rem' }}
+            aria-label="Toggle menu"
+            aria-expanded={isOpen}
+            className="md:hidden rounded-full p-2 transition-colors duration-300 hover:bg-white/10"
           >
-            {isOpen ? (
-              <X className="w-6 h-6 text-foreground" />
-            ) : (
-              <Menu className="w-6 h-6 text-foreground" />
-            )}
+            {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
 
-        {/* Mobile Navigation */}
-        <div className={`md:hidden transition-all duration-300 overflow-hidden ${
-          isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-        }`}>
-          <div className="py-4 space-y-4 glass rounded-lg mt-2 border border-white/10 text-lg">
-            {navItems.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection(item.href);
-                }}
-                className="block px-6 py-3 text-muted-foreground hover:text-primary transition-colors cursor-pointer font-semibold text-xl"
-              >
-                {item.label}
-              </a>
-            ))}
-            <div className="px-6 pt-2">
-              <Button variant="glow" size="default" className="w-full group px-4 py-2 text-base">
-                <Download className="w-5 h-5 mr-2 group-hover:animate-bounce" />
-                Download Resume
-              </Button>
+        {/* Mobile Menu */}
+        <div
+          className={`md:hidden grid transition-all duration-500 ease-out-expo ${
+            isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+          }`}
+        >
+          <div className="overflow-hidden">
+            <div className="space-y-1 border-t border-white/10 py-3">
+              {navItems.map((item) => (
+                <button
+                  key={item.href}
+                  onClick={() => scrollToSection(item.href)}
+                  className="block w-full rounded-lg px-3 py-2 text-left text-sm text-muted-foreground transition-colors duration-300 hover:bg-white/5 hover:text-foreground"
+                >
+                  {item.label}
+                </button>
+              ))}
             </div>
           </div>
         </div>
