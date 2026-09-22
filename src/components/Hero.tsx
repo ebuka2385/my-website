@@ -35,7 +35,7 @@ const Hero = () => {
               </Reveal>
               <Reveal delay={160}>
                 <p className="text-lg text-muted-foreground leading-relaxed">
-                  Founder of Helthy, building the next-gen fitness platform for 800+ users. Three software engineering internships at Honeywell, John Deere, and Parker Hannifin &mdash; now founding engineer at Buckeye AI.
+                  Founder of Helthy, building the next-gen fitness platform helping 5k+ people reach their fitness goals. 
                 </p>
               </Reveal>
             </div>
